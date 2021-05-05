@@ -1,0 +1,40 @@
+body {
+  background-size: cover;
+  background: url('../images/asanoha-400px.png');
+}
+
+#let_op {
+
+  margin: 50px auto;
+
+  img {
+    display: block;
+    margin: 10px auto;
+    float: left;
+    position: relative;
+    top: -12.5px;
+
+    @media screen and(min-width: 992px){
+      top: -5px;
+    }
+  }
+  p {
+    text-align: center;
+    color: #63b6ff;
+    font-weight: 400;
+    letter-spacing: 4.5px;
+    font-family: "Helvetica Neue", sans-serif;
+
+
+    @media screen and(min-width: 992px) {
+      font-size: 1.8em;
+    }
+  }
+}
+
+.content-wrapper {
+  margin: 0 auto;
+  min-width: 100%;
+  max-width: 100%;
+  height: auto;
+}

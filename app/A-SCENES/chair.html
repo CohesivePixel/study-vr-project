@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- build:css css/styles.min.css -->
+    <link rel="stylesheet" type="text/css" href="../css/lib/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/lib/bootstrap-theme.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/style.css">
+    <!-- endbuild -->
+    <!--build:js assets/js/main.min.js-->
+    <script src="../js/lib/aframe.min.js"></script>
+    <script src="../js/lib/aframe-bmfont-text-component.min.js"></script>
+    <script src="../js/lib/jquery-3.1.1.min.js"></script>
+    <script src="../js/chair.js"></script>
+    <!--endbuild-->
+    <title>VR-BuildHouse</title>
+</head>
+<body>
+    <div id="main-compound" class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4">
+                <a href="../index.html" class="prev-btn"><img src="../images/back-btn.svg" alt="Vorige"></a>
+            </div>
+            <div class="col-xs-8">
+                <!--Empty column-->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-lg-offset-4">
+                <div id="let_op" class="alert alert-info">
+                    <img src="../images/warning.svg" width="25px" height="25px">
+                    <p>Zet nu je VR bril op</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-10 col-xs-offset-1">
+                <div class="loading"></div>
+                <div id="timer">10</div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <a-scene inspector="url: https://aframe.io/releases/0.3.2/aframe-inspector.min.js" canvas="">
+        <!--Inladen van de assets-->
+        <a-assets>
+            <!--omgeving-->
+            <a-asset-item id="enviroment-obj" src="../models/Environment - LoRes.obj"></a-asset-item>
+            <a-asset-item id="enviroment-mtl" src="../models/Environment - LoRes.mtl"></a-asset-item>
+
+            <!-- Placer object -->
+            <a-asset-item id="placer-obj" src="../models/placer.obj"></a-asset-item>
+
+            <!--Stoel Miniatuurtjes-->
+            <a-asset-item id="seat-1-min-obj" src="../models/CHAIR/selectables/CO - Seat - C1.obj"></a-asset-item>
+            <a-asset-item id="seat-2-min-obj" src="../models/CHAIR/selectables/CO - Seat - C2.obj"></a-asset-item>
+            <a-asset-item id="seat-3-min-obj" src="../models/CHAIR/selectables/CO - Seat - C3.obj"></a-asset-item>
+            <a-asset-item id="feet-1-min-obj" src="../models/CHAIR/selectables/CO - Feet - C1.obj"></a-asset-item>
+            <a-asset-item id="feet-2-min-obj" src="../models/CHAIR/selectables/CO - Feet - C2.obj"></a-asset-item>
+            <a-asset-item id="feet-3-min-obj" src="../models/CHAIR/selectables/CO - Feet - C3.obj"></a-asset-item>
+
+            <!--Bank Componenten-->
+            <a-asset-item id="seat-1-obj" src="../models/CHAIR/Seat - C1.obj"></a-asset-item>
+            <a-asset-item id="seat-2-obj" src="../models/CHAIR/Seat - C2.obj"></a-asset-item>
+            <a-asset-item id="seat-3-obj" src="../models/CHAIR/Seat - C3.obj"></a-asset-item>
+            <a-asset-item id="feet-1-obj" src="../models/CHAIR/Feet - C1.obj"></a-asset-item>
+            <a-asset-item id="feet-2-obj" src="../models/CHAIR/Feet - C2.obj"></a-asset-item>
+            <a-asset-item id="feet-3-obj" src="../models/CHAIR/Feet - C3.obj"></a-asset-item>
+
+            <!--Kruis-->
+            <a-asset-item id="Cross-obj" src="../models/cross.obj"></a-asset-item>
+            <a-asset-item id="Refresh-obj" src="../models/recycling6.obj"></a-asset-item>
+            <a-asset-item id="Checkout-obj" src="../models/checkout.obj"></a-asset-item>
+
+            <!--Mixins-->
+            <a-mixin id="scale" scale="0.6 0.6 0.6"></a-mixin>
+            <a-mixin id="color" material="color:#282828"></a-mixin>
+
+            <!--Sound-->
+            <audio id="pickupSound" src="../sound/Pickup.wav" preload="auto"></audio>
+            <audio id="placeDownSound" src="../sound/PlaceDown.wav"></audio>
+
+            <!--Pictures-->
+            <img id="close-menu" src="../images/close-menu.png">
+            <img id="pickup-icon" src="../images/Pickup.png">
+
+            <!--Lichtkleuren. Je kunt gewoon de material waarden gebruiken ;)-->
+            <a-mixin id="evening" material="shader:flat;color:#faeac9"></a-mixin>
+            <a-mixin id="night" material="shader:flat;color:#121218"></a-mixin>
+            <a-mixin id="morning" material="shader:flat;color:#dcbfba"></a-mixin>
+            <a-mixin id="day" material="shader:flat;color:#e2ebf3"></a-mixin>
+        </a-assets>
+
+
+
+        <!--EINDE VAN ASSETS | BEGIN VAN CODE-->
+
+
+
+        <!--Camera-->
+        <a-entity id="cam" camera="userHeight:1.6" look-controls position="0 0 2.2" rotation="-25.5 4.5 0">
+            <a-entity id="held" class="placed" obj-model="" material="" rotation="0 0 0" position="1 0 -2"
+                      mixin="scale"></a-entity>
+            <a-entity raycaster="objects: .clickable; interval: 100"
+                      cursor="fuse: true; fuseTimeout: 700"
+                      position="0 0 -1"
+                      geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.02"
+                      material="color: #333435; shader: flat"
+                      cursor-fuse>
+                <a-ring id="counter" radius-inner="0.025" radius-outer="0.03" color="cyan" theta-length="0"></a-ring>
+            </a-entity>
+        </a-entity>
+
+
+        <!--Stoel Miniatuurtjes-->
+        <a-entity id="Stoel" class="clickable">
+
+            <a-entity id="placer" class="clickable">
+                <a-obj-model src="#placer-obj"
+                             position="0 0.8 0"
+                             rotation="0 -90 0"
+                             scale="0.1 0.1 0.1"
+                             color="#ff8040"
+                             cursor-fuse>
+                </a-obj-model>
+            </a-entity>
+
+            <a-entity id="seat-1-select" class="clickable">
+                <a-obj-model src="#seat-1-min-obj"
+                             class="selectab"
+                             position="3 2 0.5"
+                             rotation="0 180 0"
+                             mixin="scale color"
+                             data-cat="seat-1"
+                             data-place="top">
+                        <a-animation attribute="rotation" dur="10000" fill="forwards"
+                                     to="0 270 0" repeat="indefinite"></a-animation>
+                        <a-entity id="pickupSound-seat-1" sound="src: #pickupSound"></a-entity>
+                    <a-entity id="placeDownSound-seat-1" sound="src: #placeDownSound"></a-entity>
+                </a-obj-model>
+            </a-entity>
+
+            <a-entity id="seat-2-select" class="clickable">
+                <a-obj-model src="#seat-2-min-obj"
+                             class="selectab"
+                             position="3 1 0"
+                             rotation="0 180 0"
+                             mixin="scale color"
+                             data-cat="seat-2"
+                             data-place="top">
+                        <a-animation attribute="rotation" dur="10000" fill="forwards"
+                                     to="0 270 0" repeat="indefinite"></a-animation>
+                        <a-entity id="pickupSound-seat-2" sound="src: #pickupSound"></a-entity>
+                    <a-entity id="placeDownSound-seat-2" sound="src: #placeDownSound"></a-entity>
+                </a-obj-model>
+            </a-entity>
+
+            <a-entity id="seat-3-select" class="clickable">
+                <a-obj-model src="#seat-3-min-obj"
+                             class="selectab"
+                             position="3 1 1"
+                             rotation="0 180 0"
+                             mixin="scale color"
+                             data-cat="seat-3"
+                             data-place="top">
+                        <a-animation attribute="rotation" dur="10000" fill="forwards"
+                                     to="0 270 0" repeat="indefinite"></a-animation>
+                        <a-entity id="pickupSound-seat-3" sound="src: #pickupSound"></a-entity>
+                    <a-entity id="placeDownSound-seat-3" sound="src: #placeDownSound"></a-entity>
+                </a-obj-model>
+            </a-entity>
+
+            <a-entity id="feet-1-select" class="clickable">
+                <a-obj-model src="#feet-1-min-obj"
+                             class="selectab"
+                             position="-3 2 0.5"
+                             rotation="0 -90 0"
+                             mixin="scale color"
+                             data-cat="feet-1"
+                             data-place="bottom">
+                        <a-animation attribute="rotation" dur="10000" fill="forwards"
+                                     to="0 270 0" repeat="indefinite"></a-animation>
+                        <a-entity id="pickupSound-feet-1" sound="src: #pickupSound"></a-entity>
+                    <a-entity id="placeDownSound-feet-1" sound="src: #placeDownSound"></a-entity>
+                </a-obj-model>
+            </a-entity>
+
+            <a-entity id="feet-2-select" class="clickable">
+                <a-obj-model src="#feet-2-min-obj"
+                             class="selectab feet-2"
+                             position="-3 1 0"
+                             rotation="0 -90 0"
+                             mixin="scale color"
+                             data-cat="feet-2"
+                             data-place="bottom">
+                        <a-animation attribute="rotation" dur="10000" fill="forwards"
+                                     to="0 270 0" repeat="indefinite"></a-animation>
+                        <a-entity id="pickupSound-feet-2" sound="src: #pickupSound"></a-entity>
+                    <a-entity id="placeDownSound-feet-2" sound="src: #placeDownSound"></a-entity>
+                </a-obj-model>
+            </a-entity>
+
+            <a-entity id="feet-3-select" class="clickable">
+                <a-obj-model src="#feet-3-min-obj"
+                             class="selectab feet-3"
+                             position="-3 1 1"
+                             rotation="0 -90 0"
+                             mixin="scale color"
+                             data-cat="feet-3"
+                             data-place="bottom">
+                        <a-animation attribute="rotation" dur="10000" fill="forwards"
+                                     to="0 270 0" repeat="indefinite"></a-animation>
+                        <a-entity id="pickupSound-feet-3" sound="src: #pickupSound"></a-entity>
+                    <a-entity id="placeDownSound-feet-3" sound="src: #placeDownSound"></a-entity>
+                </a-obj-model>
+            </a-entity>
+
+
+            <!--Deselectie-Kruizen-->
+            <a-entity id="crossL" class="clickable">
+                <a-obj-model src="#Cross-obj"
+                             color="#b30000"
+                             position="-3.25 2.5 0.6"
+                             rotation="0 -90 0"
+                             scale="0.006 0.006 0.006">
+                </a-obj-model>
+            </a-entity>
+
+            <a-entity id="crossR" class="clickable">
+                <a-obj-model src="#Cross-obj"
+                             color="#b30000"
+                             position="3.25 2.5 0.6"
+                             rotation="0 -90 0"
+                             scale="0.006 0.006 0.006">
+                </a-obj-model>
+            </a-entity>
+
+
+            <!--|| REFRESH KNOP ||-->
+            <a-entity id="refresh" class="clickable">
+                <a-obj-model src="#Refresh-obj"
+                             color="#1a75ff"
+                             position="-0.2 0.4 0.9"
+                             rotation="-90 0 0"
+                             scale="0.003 0.003 0.003">
+                </a-obj-model>
+            </a-entity>
+
+            <a-entity id="checkout" class="clickable">
+                <a-obj-model src="#Checkout-obj"
+                             color="#1a75ff"
+                             position="0.2 0.4 0.9"
+                             rotation="-90 0 0"
+                             mixin="scale"
+                             scale="0.003 0.003 0.003">
+                </a-obj-model>
+            </a-entity>
+
+            <!--Text-->
+            <a-entity id="info-text-parent"></a-entity>
+
+
+            <!--Stoel Componenten-->
+            <a-entity id="seat-1-actual" class="clickable">
+                <a-obj-model src="#seat-1-obj"
+                             class="actual"
+                             id="seat-1-actual-model"
+                             position="-10 -10 -10"
+                             rotation="0 -90 0"
+                             mixin="scale"
+                             data-act-cat="seat-1"
+                             data-act-place="top"
+                             menu>
+                </a-obj-model>
+                <a-entity id="pickupSound-act-seat-1" sound="src: #pickupSound"></a-entity>
+                <a-entity id="placeDownSound-act-seat-1" sound="src: #placeDownSound"></a-entity>
+            </a-entity>
+
+            <a-entity id="seat-2-actual" class="clickable">
+                <a-obj-model src="#seat-2-obj"
+                             class="actual"
+                             id="seat-2-actual-model"
+                             position="-10 -10 -10"
+                             rotation="0 -90 0"
+                             data-act-cat="seat-2"
+                             mixin="scale"
+                             data-act-place="top"
+                             menu>
+                </a-obj-model>
+                <a-entity id="pickupSound-act-seat-2" sound="src: #pickupSound"></a-entity>
+                <a-entity id="placeDownSound-act-seat-2" sound="src: #placeDownSound"></a-entity>
+            </a-entity>
+
+            <a-entity id="seat-3-actual" class="clickable">
+                <a-obj-model src="#seat-3-obj"
+                             class="actual"
+                             id="seat-3-actual-model"
+                             position="-10 -10 -10"
+                             rotation="0 -90 0"
+                             data-act-cat="seat-3"
+                             mixin="scale"
+                             data-act-place="top"
+                             menu>
+                </a-obj-model>
+                <a-entity id="pickupSound-act-seat-3" sound="src: #pickupSound"></a-entity>
+                <a-entity id="placeDownSound-act-seat-3" sound="src: #placeDownSound"></a-entity>
+            </a-entity>
+
+            <a-entity id="feet-1-actual" class="clickable">
+                <a-obj-model src="#feet-1-obj"
+                             class="actual"
+                             id="feet-1-actual-model"
+                             position="-10 -10 -10"
+                             rotation="0 -90 0"
+                             mixin="scale"
+                             data-act-cat="feet-1"
+                             data-act-place="bottom"
+                             menu>
+                </a-obj-model>
+                <a-entity id="pickupSound-act-feet-1" sound="src: #pickupSound"></a-entity>
+                <a-entity id="placeDownSound-act-feet-1" sound="src: #placeDownSound"></a-entity>
+            </a-entity>
+
+            <a-entity id="feet-2-actual" class="clickable">
+                <a-obj-model src="#feet-2-obj"
+                             class="actual"
+                             id="feet-2-actual-model"
+                             position="-10 -10 -10"
+                             rotation="0 -90 0"
+                             mixin="scale"
+                             data-act-cat="feet-2"
+                             data-act-place="bottom"
+                             menu>
+                </a-obj-model>
+                <a-entity id="pickupSound-act-feet-2" sound="src: #pickupSound"></a-entity>
+                <a-entity id="placeDownSound-act-feet-2" sound="src: #placeDownSound"></a-entity>
+            </a-entity>
+
+            <a-entity id="feet-3-actual" class="clickable">
+                <a-obj-model src="#feet-3-obj"
+                             class="actual"
+                             id="feet-3-actual-model"
+                             rotation="0 -90 0"
+                             position="-10 -10 -10"
+                             mixin="scale"
+                             data-act-cat="feet-3"
+                             data-act-place="bottom"
+                             menu>
+                </a-obj-model>
+                <a-entity id="pickupSound-act-feet-3" sound="src: #pickupSound"></a-entity>
+                <a-entity id="placeDownSound-act-feet-3" sound="src: #placeDownSound"></a-entity>
+            </a-entity>
+
+
+            <!--Menuscherm-->
+            <a-entity id="spawner" look-at="[camera]" position="-10 -10 -11">
+                <a-entity id='menu'>
+                    <a-circle color='#f2d9ae' position='0 0.5 0' radius='0.05' class='clickable menu-item'
+                              selection='action:#f2d9ae'>
+                        <a-animation
+                                begin="move"
+                                attribute='position'
+                                from='0 0 0'
+                                to='0 0.5 0'
+                                delay='100'
+                                dur='1000'
+                                easing='ease-out-bounce'
+                                fill='forwards'>
+                        </a-animation>
+                    </a-circle>
+                    <a-circle color='#9e7548' position='0.2 0.45 0.03' radius='0.05' class='clickable menu-item'
+                              selection='action:#9e7548'>
+                        <a-animation
+                                begin="move"
+                                attribute='position'
+                                from='0 0 0'
+                                to='0.2 0.45 0.03'
+                                delay='100'
+                                dur='1000'
+                                easing='ease-out-bounce'
+                                fill='forwards'>
+                        </a-animation>
+                    </a-circle>
+                    <a-circle color='#78554b' position='0.35 0.35 0.05' radius='0.05' class='clickable menu-item'
+                              selection='action:#78554b'>
+                        <a-animation
+                                begin="move"
+                                attribute='position'
+                                from='0 0 0'
+                                to='0.35 0.35 0.05'
+                                delay='100'
+                                dur='1000'
+                                easing='ease-out-bounce'
+                                fill='forwards'>
+                        </a-animation>
+                    </a-circle>
+                    <a-circle color='#453f36' position='0.45 0.2 0.04' radius='0.05' class='clickable menu-item'
+                              selection='action:#453f36'>
+                        <a-animation
+                                begin="move"
+                                attribute='position'
+                                from='0 0 0'
+                                to='0.45 0.2 0.04'
+                                delay='100'
+                                dur='1000'
+                                easing='ease-out-bounce'
+                                fill='forwards'>
+                        </a-animation>
+                    </a-circle>
+                    <a-circle color='#343434' position='0.5 0.02 0.02' radius='0.05' class='clickable menu-item'
+                              selection='action:#343434'>
+                        <a-animation
+                                begin="move"
+                                attribute='position'
+                                from='0 0 0'
+                                to='0.5 0.02 0.02'
+                                delay='100'
+                                dur='1000'
+                                easing='ease-out-bounce'
+                                fill='forwards'>
+                        </a-animation>
+                    </a-circle>
+                    <a-circle material="src: #close-menu" position='-0.43 0.23 -0.07' radius='0.08'
+                              class='clickable menu-item'
+                              selection='action:rem'>
+                        <a-animation
+                                begin="move"
+                                attribute='position'
+                                from='0 0 0'
+                                to='-0.43 0.23 -0.07'
+                                delay='100' dur='1000'
+                                easing='ease-out-bounce'
+                                fill='forwards'>
+                        </a-animation>
+                    </a-circle>
+                    <a-circle material="src:#pickup-icon" position='-0.5 0.03 -0.07' radius='0.08'
+                              class='clickable menu-item'
+                              selection='action:up'>
+                        <a-animation
+                                begin="move"
+                                attribute='position'
+                                from='0 0 0'
+                                to='-0.5 0.03 -0.07'
+                                delay='100'
+                                dur='1000'
+                                easing='ease-out-bounce'
+                                fill='forwards'>
+                        </a-animation>
+                    </a-circle>
+                </a-entity>
+            </a-entity>
+
+            <!--Omgeving-->
+            <a-obj-model src="#enviroment-obj" mtl="#enviroment-mtl" rotation="0 -90 0" mixin="scale"></a-obj-model>
+
+            <!--Buiten-->
+            <a-sky id="sky" color="#faeac9"></a-sky>
+
+            <!--Lichten-->
+            <a-entity light="decay:2;intensity:0.55;type:point" position="4.76 2.06 -3.04"></a-entity>
+            <a-entity light="decay:2;intensity:0.55;type:point" position="4.76 2.06 2.68"></a-entity>
+            <a-entity light="decay:2;intensity:0.35;type:point" position="-5.43 2.86 2.68" rotation="0 0 0" scale="1 1 1"
+                      visible="true"></a-entity>
+            <a-entity light="decay:2;intensity:0.35;type:point" position="-5.43 2.86 -3.17" rotation="0 0 0" scale="1 1 1"
+                      visible="true"></a-entity>
+            <a-entity position="0 3.29 0" light="intensity:0.56" target="#couch"></a-entity>
+        </a-entity>
+    </a-scene>
+    <script src="../js/functions.js"></script>
+</body>
+</html>

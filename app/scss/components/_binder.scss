@@ -1,0 +1,21 @@
+@mixin sizer($size) {
+  display: block;
+  width: $size;
+  height: $size;
+  margin: 120px auto;
+}
+
+.binder {
+  $size: 100%;
+  @include sizer($size);
+
+  @media all and(min-width: 992px) {
+    $size: 50%;
+    @include sizer($size);
+  }
+}
+
+.binder-enter-vr {
+  @extend .binder;
+  margin: 85px auto;
+}

@@ -1,0 +1,23 @@
+{
+  "name": "ipmedt3",
+  "description": "Project voor IPMEDT3",
+  "main": "index.js",
+  "authors": [
+    "Ben van Eekelen"
+  ],
+  "license": "GPL-2.0",
+  "keywords": [
+    "HSleiden",
+    "Mediatech",
+    "VR"
+  ],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

@@ -1,0 +1,63 @@
+@mixin basic-btn($btn-size) {
+  display: block;
+  margin: 10px auto;
+  border: none;
+  width: $btn-size;
+  height: $btn-size;
+  background-color: transparent;
+}
+
+.furn-btn {
+  @include basic-btn(100px);
+  $btn-size-hover: 120px;
+  $transition-value: width 0.1s, height 0.1s, margin 0.1s;
+
+  &:hover {
+    width: $btn-size-hover;
+    height: $btn-size-hover;
+    margin: 0 auto;
+    -webkit-transition: $transition-value;
+    -moz-transition: $transition-value;
+    -ms-transition: $transition-value;
+    -o-transition: $transition-value;
+    transition: $transition-value;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.prev-btn {
+  margin-top: 30px;
+  display: block;
+  border: none;
+  background-color: transparent;
+
+  @media all and (min-width: 992px){
+    img {
+      width: 30%;
+      height: 30%;
+      margin: 0 20px;
+    }
+  }
+}
+
+#enter-vr {
+  @include basic-btn(200px);
+  display: block;
+  margin: 70px auto;
+}
+
+#enter-vr-text {
+  text-align: center;
+  font-family: "Josefin Sans", sans-serif;
+  font-size: 1.3em;
+}
+
+#back-btn {
+  display: block;
+  margin: 50px auto;
+}
+

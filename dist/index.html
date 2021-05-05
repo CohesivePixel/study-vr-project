@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="assets/css/styles.min.css">
+    <script src="assets/js/lib/aframe.min.js"></script>
+    <title>VR-BuildHouse</title>
+</head>
+<body>
+    <a-scene inspector="url: https://aframe.io/releases/0.3.2/aframe-inspector.min.js" canvas="">
+        <!--Inladen van de assets-->
+        <a-assets>
+            <a-asset-item id="couch-obj-1" src="assets/models/1 - Couch.obj"></a-asset-item>
+            <a-asset-item id="couch-obj-2" src="assets/models/2 - Couch.obj"></a-asset-item>
+            <a-asset-item id="couch-obj-3" src="assets/models/3 - Couch.obj"></a-asset-item>
+        </a-assets>
+
+        <!--De camera entity met het eerste couch model ervoor geplakt-->
+        <a-entity id="cam" class="" obj-model="" camera="userHeight: 1.6" look-controls wasd-controls drop-pos>
+            <a-cursor color="pink"></a-cursor>
+        </a-entity>
+
+        <!--Placeholder voor bank 1-->
+        <a-entity id="pos-1" rotation="0 -45 0" position="2 0.5 -3" >
+            <a-obj-model id="p1" scale="0.15 0.15 0.15" color="#b3b3b3"></a-obj-model>
+            <a-ring radius-inner="0.05" radius-outer="0.1" position="0 0.1 0" rotate="90 0 0"></a-ring>
+            <a-sphere class="p1 green colour" id="colour" radius="0.2" color="green" position="0 1.5 -1"></a-sphere>
+            <a-sphere class="p1 red colour" radius="0.2" color="red" position="1 1.5 -1"></a-sphere>
+            <a-sphere class="p1 blue colour" radius="0.2" color="blue" position="-1 1.5 -1"></a-sphere>
+            <a-sphere class="p1 yellow colour" radius="0.2" color="yellow" position="2 1.5 -1"></a-sphere>
+            <a-sphere class="p1 orange colour" radius="0.2" color="orange" position="-2 1.5 -1"></a-sphere>
+        </a-entity>
+
+        <!--Placeholder voor bank 2-->
+        <a-entity id="pos-2" rotation="0 180 0" position="-4 0.5 5">
+            <a-obj-model id="p2" scale="0.15 0.15 0.15" color="#b3b3b3"></a-obj-model>
+            <a-ring radius-inner="0.05" radius-outer="0.1" position="0 0.1 0" rotate="90 0 0"></a-ring>
+            <a-sphere class="p2 green colour" id="colour" radius="0.2" color="green" position="0 1.5 -1"></a-sphere>
+            <a-sphere class="p2 red colour" radius="0.2" color="red" position="1 1.5 -1"></a-sphere>
+            <a-sphere class="p2 blue colour" radius="0.2" color="blue" position="-1 1.5 -1"></a-sphere>
+            <a-sphere class="p2 yellow colour" radius="0.2" color="yellow" position="2 1.5 -1"></a-sphere>
+            <a-sphere class="p2 orange colour" radius="0.2" color="orange" position="-2 1.5 -1"></a-sphere>
+        </a-entity>
+
+        <!--Placeholder voor bank 3-->
+        <a-entity id="pos-3" rotation="0 45 0" position="-6 0.5 -9">
+            <a-obj-model id="p3" scale="0.15 0.15 0.15" color="#b3b3b3"></a-obj-model>
+            <a-ring radius-inner="0.05" radius-outer="0.1" position="0 0.1 0" rotate="90 0 0"></a-ring>
+            <a-sphere class="p3 green colour" id="colour" radius="0.2" color="green" position="0 1.5 -1"></a-sphere>
+            <a-sphere class="p3 red colour" radius="0.2" color="red" position="1 1.5 -1"></a-sphere>
+            <a-sphere class="p3 blue colour" radius="0.2" color="blue" position="-1 1.5 -1"></a-sphere>
+            <a-sphere class="p3 yellow colour" radius="0.2" color="yellow" position="2 1.5 -1"></a-sphere>
+            <a-sphere class="p3 orange colour" radius="0.2" color="orange" position="-2 1.5 -1"></a-sphere>
+        </a-entity>
+
+        <!--De kleur selectors-->
+        <a-entity id="box_parentBlue" position="12 1.5 0">
+            <a-obj-model src="#couch-obj-1" scale="0.25 0.25 0.25" rotation="15 -90 0" color="#b3b3b3"></a-obj-model>
+        </a-entity>
+
+        <a-entity id="box_parentGreen" position="12 1.5 -5">
+            <a-obj-model src="#couch-obj-2" scale="0.25 0.25 0.25" rotation="15 -90 0" color="#b3b3b3"></a-obj-model>
+        </a-entity>
+
+        <a-entity id="box_parentRed" position="12 1.5 5">
+            <a-obj-model src="#couch-obj-3" scale="0.25 0.25 0.25" rotation="15 -90 0" color="#b3b3b3"></a-obj-model>
+        </a-entity>
+
+        <!-- Alles voor de muren -->
+        <a-entity id="box_parentWallBlue">
+            <a-box id="boxBlue" width="1" height="1" depth="1.5" color="blue" position="-14.9 9 -13" color="#b3b3b3"></a-box>
+        </a-entity>
+
+        <a-entity id="box_parentWallRed">
+            <a-box id="boxRed" width="1" height="1" depth="1.5" color="red" position="-14.9 9 -11"></a-box>
+        </a-entity>
+
+        <a-entity id="box_parentCrossWall">
+            <a-box id="boxCrossWall" src="img/cross.jpeg" width="1" height="1" depth="1.5" color="" position="-14.9 9 -9"></a-box>
+        </a-entity>
+
+        <a-entity id="box_parentwall">
+            <a-box id="wall" height="10" depth="30" color="" position="-15 5 0"></a-box>
+        </a-entity>
+
+        <a-entity id="box_parentwall">
+            <a-box id="wall1" height="10" depth="30" color="" position="15 5 0"></a-box>
+        </a-entity>
+
+        <a-entity id="box_parentwall">
+            <a-box id="wall2" width="30" height="10" color="" position="0 5 -15"></a-box>
+        </a-entity>
+
+        <a-entity id="box_parentwall">
+            <a-box id="wall3" width="30" height="10" color="" position="0 5 15"></a-box>
+        </a-entity>
+
+        <!--De sky-->
+        <a-sky color="#ccf5ff"></a-sky>
+
+        <!--De vloer-->
+        <a-plane rotation="-90 0 0" width="50" height="50" color="grey"></a-plane>
+
+    </a-scene>
+
+    <!--Background theme-->
+    <!--<object id="bg-music" data="models/BG-Tune_mixdown.mp3" type="video/quicktime" width="0" height="0">
+        <param name="filename" value="BG-Tune_mixdown.mp3">
+        <param name="autostart" value="1">
+        <param name="playcount" value="true">
+    </object>-->
+
+    <script src="assets/js/main.min.js"></script>
+</body>
+</html>
+
+
+<!--<a-entity camera="userHeight: 1.6" look-controls wasd-controls id="player" check-collision>
+            <a-entity raycaster="objects: .couch" cursor geometry="primitive: ring" rotation="90 0 0" material="color: black" position="0 0 -1"></a-entity>
+        </a-entity>-->

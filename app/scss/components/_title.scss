@@ -1,0 +1,25 @@
+$img-size: 75%;
+
+img#title-logo {
+  width: $img-size;
+  height: $img-size;
+  margin: auto;
+  display: block;
+}
+
+#start-here {
+  margin-top: 20px;
+  h5 {
+    text-align: center;
+    font-family: "Josefin Sans", sans-serif;
+    font-size: 1.2em;
+  }
+}
+
+#voortgang-tracker {
+  @extend #start-here;
+}
+
+.end-text {
+  text-align: center;
+}
